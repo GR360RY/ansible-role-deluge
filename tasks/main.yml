@@ -1,0 +1,69 @@
+---
+# tasks file for deluge
+
+- name: Add Deluge PPA
+  apt_repository: repo=ppa:deluge-team/ppa state=present
+
+- name: Install Deluge Daemon
+  apt: name={{ item }} state=latest update_cache=yes cache_valid_time=3600
+  with_items:
+    - deluged
+    - deluge-web
+    - deluge-console
+
+- name: Create Deluge Daemon Directory
+  file: path={{ item }} state=directory owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0755
+  with_items:
+    - "{{ deluged_path }}"
+    - "{{ deluged_path }}/config"
+    - "{{ deluged_path }}/config/state"
+
+
+- name: Update Deluge Daemon Upstart Job
+  template: src=deluged.conf.j2 dest=/etc/init/deluged.conf owner=root group=root mode=0755
+
+- name: Update Deluge Web Upstart Job
+  template: src=deluge-web.conf.j2 dest=/etc/init/deluge-web.conf owner=root group=root mode=0755
+
+- name: Create Deluge downloads folders
+  file: path={{ item }} state=directory owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0775
+  with_items:
+    - "{{ deluged_incomplete }}"
+
+- name: Create Deluge downloads folders
+  file: path={{ item }} state=directory owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0775
+  with_items:
+    - "{{ deluged_incomplete }}"
+
+- name: Create process folder for nzbtomedia processing
+  file: path={{ item }} state=directory owner={{ htpc_user_username }} mode=0775
+  with_items:
+    - "{{ process_path }}"
+
+- name: Configure Label plugin
+  template: src=label.conf.j2 dest="{{ deluged_path }}/config/label.conf" owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0640
+
+- name: Update Execute plugin config
+  template: src=execute.conf.j2 dest="{{ deluged_path }}/config/execute.conf" owner={{ deluged_user }} group={{ htpc_user_group }} mode=0640
+  when: nzbtomedia_enabled is defined and nzbtomedia_enabled
+
+- name: Update Deluge credentials
+  lineinfile: dest={{ deluged_path }}/config/auth regexp='^localclient' line='localclient:{{ deluged_localclient_password }}:10' owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0600 create=yes
+
+- name: Update Deluged core.conf
+  template: src=core.conf.j2 dest={{ deluged_path }}/config/core.conf owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0640
+  register: deluged_core_update
+
+- name: Stop deluged daemon before reapplying core.conf update
+  service: name=deluged state=stopped
+  when: deluged_core_update.changed
+
+- name: Reapply deluged core.conf update
+  template: src=core.conf.j2 dest={{ deluged_path }}/config/core.conf owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0640
+  when: deluged_core_update.changed
+
+- name: Make sure Deluge Daemon is running and enabled on boot
+  service: name=deluged state=started enabled=yes
+
+- name: Make sure Deluge Web is running and enabled on boot
+  service: name=deluge-web state=started enabled=yes

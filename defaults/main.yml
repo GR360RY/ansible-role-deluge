@@ -1,0 +1,19 @@
+---
+# defaults file for deluge
+deluge_enabled: True
+
+# Deluge Daemon Path
+deluged_path: /opt/deluged
+
+deluged_downloads: "{{ htpc_media_path }}/{{ htpc_media_downloads }}"
+
+# Default download locations:
+deluged_incomplete: "{{ deluged_downloads }}/incomplete/deluged"
+
+# Required for nzbtomedia processing
+process_path: "{{ deluged_downloads }}/incomplete/process"
+
+deluged_localclient_password: 2b9cf85259f2149da47458eda73ba23ac06faa21
+
+deluged_host: "{{ ansible_default_ipv4.address }}"
+deluged_port: 8112

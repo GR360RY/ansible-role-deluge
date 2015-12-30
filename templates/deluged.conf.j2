@@ -1,0 +1,19 @@
+# deluged - Deluge daemon
+#
+# The daemon component of Deluge BitTorrent client. Deluge UI clients
+# connect to this daemon via DelugeRPC protocol.
+
+description "Deluge daemon"
+author "Deluge Team"
+
+start on filesystem and static-network-up
+stop on runlevel [016]
+
+respawn
+respawn limit 5 30
+
+env uid={{ htpc_user_username }}
+env gid={{ htpc_user_group }}
+env umask=007
+
+exec start-stop-daemon -S -c $uid:$gid -k $umask -x /usr/bin/deluged -- -d -c {{ deluged_path }}/config -l {{ deluged_path }}/deluged.log -L warning
