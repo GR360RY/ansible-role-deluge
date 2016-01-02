@@ -16,4 +16,5 @@ process_path: "{{ deluged_downloads }}/incomplete/process"
 deluged_localclient_password: 2b9cf85259f2149da47458eda73ba23ac06faa21
 
 deluged_host: "{{ ansible_default_ipv4.address }}"
-deluged_port: 8112
+deluged_port: 58846
+deluge_web_port: 8112
