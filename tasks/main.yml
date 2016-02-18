@@ -44,7 +44,7 @@
   template: src=label.conf.j2 dest="{{ deluged_path }}/config/label.conf" owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0640
 
 - name: Update Execute plugin config
-  template: src=execute.conf.j2 dest="{{ deluged_path }}/config/execute.conf" owner={{ deluged_user }} group={{ htpc_user_group }} mode=0640
+  template: src=execute.conf.j2 dest="{{ deluged_path }}/config/execute.conf" owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0640
   when: nzbtomedia_enabled is defined and nzbtomedia_enabled
 
 - name: Update Deluge credentials
