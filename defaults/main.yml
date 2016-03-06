@@ -1,17 +1,20 @@
 ---
 # defaults file for deluge
+
+# Helper vaiable. In use by other roles
 deluge_enabled: yes
 
 # Deluge Daemon Path
 deluged_path: /opt/deluged
 
-deluged_downloads: "{{ htpc_media_path }}/{{ htpc_media_downloads }}"
+# Deluge Incomplete download locations
+deluged_incomplete: "{{ htpc_downloads_incomplete }}/deluged"
 
-# Default download locations:
-deluged_incomplete: "{{ deluged_downloads }}/incomplete/deluged"
-
+# Password for localclient user.
 deluged_localclient_password: 2b9cf85259f2149da47458eda73ba23ac06faa21
 
+# Helper vaiable. In use by other roles
 deluged_host: "{{ ansible_default_ipv4.address }}"
+
 deluged_port: 58846
 deluge_web_port: 8112

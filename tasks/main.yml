@@ -25,7 +25,7 @@
 - name: Update Deluge Web Upstart Job
   template: src=deluge-web.conf.j2 dest=/etc/init/deluge-web.conf owner=root group=root mode=0755
 
-- name: Create Deluge downloads folders
+- name: Create Deluge Incomplete downloads folders
   file: path={{ item }} state=directory owner={{ htpc_user_username }} group={{ htpc_user_group }} mode=0775 recurse=yes
   with_items:
     - "{{ deluged_incomplete }}"

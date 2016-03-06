@@ -1,3 +1,4 @@
+
 deluge
 ======
 [![Galaxy](http://img.shields.io/badge/galaxy-GR360RY.deluge-green.svg?style=flat-square)](https://galaxy.ansible.com/GR360RY/deluge/)
@@ -33,10 +34,11 @@ Downloads and Media folders layout if used with default variable values:
 
 ```
 /mnt/media/
-├── downloads               # Deluge Complete Downloads
+├── downloads               
+│   ├── complete        # Deluge Complete Downloads
 │   └── incomplete
-│       ├── deluged         # Deluge Incomplete Downloads
-│       └── process         # nzbtomedia processing folders
+│       ├── deluged     # Deluge Incomplete Downloads
+│       └── process     # nzbtomedia processing folders
 │           ├── movie
 │           └── tv
 ├── movies
@@ -60,12 +62,8 @@ deluge_enabled: yes
 # Deluge Daemon Path
 deluged_path: /opt/deluged
 
-# Complete downloads location. Directory will be create automatically 
-# in htpc-common role.
-deluged_downloads: "{{ htpc_media_path }}/{{ htpc_media_downloads }}"
-
-# Incomplete download locations
-deluged_incomplete: "{{ deluged_downloads }}/incomplete/deluged"
+# Deluge Incomplete download locations
+deluged_incomplete: "{{ htpc_downloads_incomplete }}/deluged"
 
 # Password for localclient user.
 deluged_localclient_password: 2b9cf85259f2149da47458eda73ba23ac06faa21
@@ -86,46 +84,67 @@ Role Name | Description
 
 Variables defined in `GR360RY.htpc-common` role:
 
-Name                      | Default   
---------------------------|------------
-htpc_user_username        | htpc      
-htpc_user_password        | htpc      
-htpc_user_group           | htpc      
-htpc_user_shell           | /bin/bash
-htpc_user_ssh_service     | yes       
-htpc_user_sudo_access     | yes     
-htpc_create_media_folders | yes
-htpc_media_path           | /mnt/media
-htpc_media_movies         | movies    
-htpc_media_tv             | tv        
-htpc_media_music          | music     
-htpc_media_pictures       | pictures  
-htpc_media_downloads      | downloads
-htpc_zeroconf             | yes
+```
+# defaults file for htpc-common
+
+htpc_user_username: htpc
+htpc_user_password: htpc
+htpc_user_group: htpc
+htpc_user_shell: /bin/bash
+htpc_user_sudo_access: yes
+htpc_ssh_service: yes
+htpc_create_media_folders: yes
+htpc_zeroconf: yes
+htpc_media_path: /mnt/media
+htpc_media_movies: movies
+htpc_media_tv: tv
+htpc_media_music: music
+htpc_media_pictures: pictures
+htpc_downloads_complete: "{{ htpc_media_path }}/downloads/complete"
+htpc_downloads_incomplete: "{{ htpc_media_path }}/downloads/incomplete"
+```
 
 Example Playbook
 ----------------
 
-Install deluge for user `foo`. Do not configure ssh,sudo and bonjour/zeroconf. Skip media folders creation.
+Install deluge for user `foo`. Don't configure ssh,sudo and bonjour/zeroconf. Skip media folders creation.
 
 ```
-    - hosts: htpc
+---
+- hosts: htpc-server
+  become: true
 
-      vars:
+  vars:
 
-      	htpc_user_username: foo
-      	htpc_user_group: foo
+  	htpc_user_username: foo
+  	htpc_user_group: foo
 
-      	htpc_user_ssh_service: no      	
-      	htpc_user_sudo_access: no
-      	htpc_create_media_folders: no
-      	htpc_zeroconf: no
+    htpc_user_sudo_access: no
+  	htpc_user_ssh_service: no
+  	htpc_create_media_folders: no
+  	htpc_zeroconf: no
 
-      	deluged_downloads: /home/foo/Downloads
-      	deluged_incomplete: /home/foo/.deluged_incomplete
+  	htpc_downloads_complete: /home/foo/Downloads
+  	deluged_incomplete: /home/foo/.deluged_incomplete
 
-      roles:
-        - role: GR360RY.deluge
+  roles:
+    - role: GR360RY.deluge
+```
+
+Install Couchpotato and Sickbeard with Deluge Torrent client as Downloader.
+Create user `htpc` identified by password `htpc`. Use default folders layout.
+
+`> ansible-galaxy install GR360RY.deluge GR360RY.sickrage GR360RY.couchpotato`
+
+```
+- hosts: htpc-server
+  become: true
+
+  roles:
+    - role: GR360RY.deluge
+    - role: GR360RY.sickrage
+    - role: GR360RY.couchpotato
+     
 ```
 
 HTPC-Ansible Project
