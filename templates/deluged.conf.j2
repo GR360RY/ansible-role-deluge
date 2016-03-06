@@ -14,6 +14,6 @@ respawn limit 5 30
 
 env uid={{ htpc_user_username }}
 env gid={{ htpc_user_group }}
-env umask=007
+env umask=002
 
 exec start-stop-daemon -S -c $uid:$gid -k $umask -x /usr/bin/deluged -- -d -c {{ deluged_path }}/config -l {{ deluged_path }}/deluged.log -L warning
