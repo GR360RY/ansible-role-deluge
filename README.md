@@ -35,7 +35,7 @@ Downloads and Media folders layout if used with default variable values:
 ```
 /mnt/media/
 ├── downloads               
-│   ├── complete        # Deluge Complete Downloads
+│   ├── complete        # Complete Downloads
 │   └── incomplete
 │       ├── deluged     # Deluge Incomplete Downloads
 │       └── process     # nzbtomedia processing folders
