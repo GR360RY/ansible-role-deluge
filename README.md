@@ -112,7 +112,7 @@ Install deluge for user `foo`. Don't configure ssh,sudo and bonjour/zeroconf. Sk
 ```
 ---
 - hosts: htpc-server
-  become: true
+  become: yes
 
   vars:
 
@@ -131,14 +131,12 @@ Install deluge for user `foo`. Don't configure ssh,sudo and bonjour/zeroconf. Sk
     - role: GR360RY.deluge
 ```
 
-Install Couchpotato and Sickbeard with Deluge Torrent client as Downloader.
+Install Couchpotato and Sickrage with Deluge Torrent client as Downloader.
 Create user `htpc` identified by password `htpc`. Use default folders layout.
-
-`> ansible-galaxy install GR360RY.deluge GR360RY.sickrage GR360RY.couchpotato`
 
 ```
 - hosts: htpc-server
-  become: true
+  become: yes
 
   roles:
     - role: GR360RY.deluge
