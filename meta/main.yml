@@ -13,4 +13,5 @@ galaxy_info:
     - system
 dependencies:
   - GR360RY.htpc-common
+  - GR360RY.nzbtomedia
 
