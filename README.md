@@ -81,6 +81,7 @@ Dependencies
 Role Name | Description
 ----------|-----------
 [![Galaxy](http://img.shields.io/badge/galaxy-GR360RY.htpc--common-blue.svg?style=flat-square)](https://galaxy.ansible.com/GR360RY/htpc-common/)| Create htpc user and media folders
+[![Galaxy](http://img.shields.io/badge/galaxy-GR360RY.nzbtomedia-blue.svg?style=flat-square)](https://galaxy.ansible.com/GR360RY/nzbtomedia)    | Install NZBtoMedia Postprocessing
 
 Variables defined in `GR360RY.htpc-common` role:
 
@@ -102,6 +103,16 @@ htpc_media_music: music
 htpc_media_pictures: pictures
 htpc_downloads_complete: "{{ htpc_media_path }}/downloads/complete"
 htpc_downloads_incomplete: "{{ htpc_media_path }}/downloads/incomplete"
+```
+
+Variables defined in `GR360RY.nzbtomedia` role:
+
+```
+---
+# defaults file for nzbtomedia
+
+nzbtomedia_enabled: yes
+nzbtomedia_path: /opt/nzbtomedia
 ```
 
 Example Playbook
