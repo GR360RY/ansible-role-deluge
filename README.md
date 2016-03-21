@@ -1,7 +1,7 @@
 
 deluge
 ======
-[![Galaxy](http://img.shields.io/badge/galaxy-GR360RY.deluge-green.svg?style=flat-square)](https://galaxy.ansible.com/GR360RY/deluge/)
+[![Build Status](https://travis-ci.org/GR360RY/ansible-role-deluge.svg?branch=master)](https://travis-ci.org/GR360RY/ansible-role-deluge) [![Galaxy](http://img.shields.io/badge/galaxy-GR360RY.deluge-green.svg](https://galaxy.ansible.com/GR360RY/deluge/)
 
 An Ansible role to setup and configure Deluge Daemon and Deluge-Web on Ubuntu.
 

@@ -1,0 +1,33 @@
+---
+language: python
+python: "2.7"
+sudo: required
+dist: trusty
+
+# Use the new container infrastructure
+# sudo: false
+
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python-pip
+
+install:
+  # Install ansible
+  - pip install ansible
+
+  # Check ansible version
+  - ansible --version
+
+  # Create ansible.cfg with correct roles_path
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
+
+script:
+  # Install role dependencies
+  - "ansible-galaxy install GR360RY.htpc-common GR360RY.nzbtomedia -p ../"
+  # Run Playbook
+  - "ansible-playbook -c local tests/test.yml -i tests/inventory --sudo"
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
