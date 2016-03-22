@@ -18,7 +18,6 @@
     - "{{ deluged_path }}/config"
     - "{{ deluged_path }}/config/state"
 
-
 - name: Update Deluge Daemon Upstart Job
   template: src=deluged.conf.j2 dest=/etc/init/deluged.conf owner=root group=root mode=0755
 
